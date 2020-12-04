@@ -61,6 +61,8 @@ function AppGame() {
         }
 
 //////////////////// MOVE PADDLE
+ 
+
         function keyDownHandler(e) {
             if (e.key === "Right" || e.key === "ArrowRight" || e.key === "d") {
                 rightPressed = true;
@@ -68,6 +70,7 @@ function AppGame() {
             else if (e.key === "Left" || e.key === "ArrowLeft" || e.key === "a") {
                 leftPressed = true;
             }
+
             else if (e.key === "ArrowUp") {
                 upPressed = true;
             }
@@ -76,7 +79,7 @@ function AppGame() {
             }
 
 
-            else if (e.key === "Space") {
+            else if (e.key === "v") {
                 spacebarPressed = true;
             }
 
@@ -90,6 +93,7 @@ function AppGame() {
             else if (e.key === "Left" || e.key === "ArrowLeft" || e.key === "a") {
                 leftPressed = false;
             }
+          
             else if (e.key === "ArrowUp") {
                 upPressed = false;
             }
@@ -97,12 +101,13 @@ function AppGame() {
                 downPressed = false;
             }
 
-
-            else if (e.key === "Space") {
-                spacebarPressed = false;
-            }
+            // else if (e.key === "v") {
+            //     spacebarPressed = false;
+            // }
 
         }
+
+     
 /////////////// END MOVE PADDLE
 
 
@@ -136,7 +141,7 @@ function AppGame() {
                 // Paddle Speed
                 paddleX -= 2;
             }
-            else if (upPressed && paddleY > 0) {
+            if (upPressed && paddleY < canvas.height - paddleHeight) {
                 // Paddle Speed
                 paddleY -= 2;
             }

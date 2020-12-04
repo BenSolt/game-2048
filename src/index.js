@@ -1,15 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
 
-import "./AppGame.css";
-import GameProvider from "./components/GameProvider";
-import App from "./App";
+// import App from './App';
+import AppGame2048 from './AppGame2048';
 
-const Root = () => (
-  <GameProvider>
-    <App />
-  </GameProvider>
-);
+import * as serviceWorker from './serviceWorker';
 
-const rootElement = document.getElementById("root");
-ReactDOM.render(<Root />, rootElement);
+ReactDOM.render(<AppGame2048 />, document.getElementById('root'));
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();

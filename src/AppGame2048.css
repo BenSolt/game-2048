@@ -1,0 +1,118 @@
+.App {
+    font-family: sans-serif;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    /* display: flex; */
+  }
+
+  .Container{
+    display: flex;
+    border: 2px solid red;
+  }
+  
+  .info{
+    border: 2px solid blue;
+  }
+
+  h1{
+    font-size: 50px;
+    color: #776e65;
+    display: inline;
+  }
+  
+  body {
+    background: #faf8ef;
+  }
+  
+
+  .grid {
+    margin: 0 auto;
+    background: #bbada0;
+    /* width: 600px;
+    height: 600px; */
+    width: 500px;
+    height: 500px;
+    border-radius: 6px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .valid {
+    background: #eee4da;
+    /* background: rgb(250, 193, 69); */
+    height: 106px;
+    width: 106px;
+    display: 1;
+    margin-right: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 106px;
+    border-radius: 3px;
+  }
+
+  .valid2 {
+    background: #ff8a65;
+    height: 106px;
+    width: 106px;
+    display: 1;
+    margin-right: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 106px;
+    border-radius: 3px;
+  }
+
+  .invalid {
+    background: rgba(238, 228, 218, 0.35);
+    height: 106px;
+    width: 106px;
+    border-radius: 3px;
+    display: 1;
+    margin-right: 10px;
+    
+  }
+
+  .oldClassName {
+    background: rgb(250, 193, 69);
+    height: 106px;
+    width: 106px;
+    display: 1;
+    margin-right: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 106px;
+    border-radius: 3px;
+  }
+  .newClassName {
+    /* background: #eee4da; */
+    background: #ff8a65;
+    height: 106px;
+    width: 106px;
+    display: 1;
+    margin-right: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 106px;
+    border-radius: 3px;
+  }
+
+
+
+  /* const colors = {
+    "color-2": "#ffb74d",
+    "color-4": "#ff8a65",
+    "color-8": "#ffa726",
+    "color-16": "#ff7043",
+    "color-32": "#ff9800",
+    "color-64": "#ff5722",
+    "color-128": "#fb8c00",
+    "color-256": "#f4511e",
+    "color-512": "#f57c00",
+    "color-1024": "#e64a19",
+    "color-2048": "#ef6c00",
+    "color-4096": "#d84315",
+    "color-8192": "#e65100"
+  }; */

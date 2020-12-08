@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./styles.css";
+import "./AppGame2048.css";
 import Grid from "./components/Grid";
 
 const App = () => {
@@ -10,19 +10,18 @@ const App = () => {
 
   return (
     <div className="App">
-      <div
-        // style={{
-        //   margin: "0 auto",
-        //   width: "100%",
-        //   height: "100%"
-        // }}
-      >
+      <div>
         <div>
+          
+          {/* <button id="buttonId" onClick={}>Click</button> */}
           <h1 >
-            Count : {count}
+            The Game 2048
+            {/* Count : {count} */}
           </h1>
+         
+         
         </div>
-        <Grid countIncrease={countIncrease} />
+          <Grid countIncrease={countIncrease} />
       </div>
     </div>
   );

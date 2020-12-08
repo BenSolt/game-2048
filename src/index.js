@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+// import './index.css';
 
-// import App from './App';
+// import AppGame from './AppGame';
 import AppGame2048 from './AppGame2048';
+
 
 import * as serviceWorker from './serviceWorker';
 

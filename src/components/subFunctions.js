@@ -1,12 +1,11 @@
 const setImmutable = input => JSON.parse(JSON.stringify(input));
-
 const addFunction = state => {
-  let result = setImmutable(state);
+  let result = setImmutable(state); 
   const num = Math.random() < 0.9 ? 2 : 4;
   const isNull = input => input === null;
   while (true) {
-    const randomColumn = Math.floor(Math.random() * 5);
-    const randobRow = Math.floor(Math.random() * 5);
+    const randomColumn = Math.floor(Math.random() * 4);
+    const randobRow = Math.floor(Math.random() * 4);
     if (isNull(result[randomColumn][randobRow])) {
       result[randomColumn][randobRow] = num;
       break;
@@ -14,7 +13,6 @@ const addFunction = state => {
   }
   return result;
 };
-
 const compare = (a, b) => {
   if (typeof a === "number" && typeof b === "number") {
     return 0;
@@ -23,7 +21,6 @@ const compare = (a, b) => {
   }
   return 1;
 };
-
 const sortFunction = (list, direction) => {
   let result = setImmutable(list);
   switch (direction) {

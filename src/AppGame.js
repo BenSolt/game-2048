@@ -51,7 +51,7 @@ function AppGame() {
             ctx.closePath();
         }
 
-///////////////////SCORE
+        ///////////////////SCORE
         var score = 0;
 
         function drawScore() {
@@ -60,7 +60,7 @@ function AppGame() {
             ctx.fillText("Score: "+score, 8, 20);
         }
 
-//////////////////// MOVE PADDLE
+        //////////////////// MOVE PADDLE
  
 
         function keyDownHandler(e) {
@@ -108,7 +108,7 @@ function AppGame() {
         }
 
      
-/////////////// END MOVE PADDLE
+        /////////////// END MOVE PADDLE
 
 
         function draw() {
@@ -132,7 +132,7 @@ function AppGame() {
                 }
             }
 
-// MOVE PADDLE
+        // MOVE PADDLE
             if (rightPressed && paddleX < canvas.width - paddleWidth) {       
                 // Paddle Speed
                 paddleX += 2;
@@ -150,7 +150,7 @@ function AppGame() {
                 paddleY += 2;
             }
 
-// SPACEBAR SHOOT
+        // SPACEBAR SHOOT
             else if (spacebarPressed) {
                 drawBall()
             }

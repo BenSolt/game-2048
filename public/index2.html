@@ -1,0 +1,393 @@
+<html>
+    <script>
+
+        var gridModel = [];
+        var numRows = 4;
+        var numCols = 4;
+        var backgroundElement;
+        var gap = 20;
+
+        var colors = [
+            "orange",
+            "red",
+            "magenta",
+            "green",
+            "blue",
+            "cyan",
+            "purple",
+            "midnightblue",
+            "lime",
+            "pink",
+            "black"
+        ];
+
+//////////////////// MOVE TILE///////////////////////////////
+/////////////////////////////////////////////////////////////
+        window.onkeydown = function(e) {
+            if (e.keyCode == 38){
+                // alert("pressed up")
+                collapseUp();addTile();
+            }
+            else if (e.keyCode == 37){
+                // alert("pressed left")
+                collapseLeft();addTile();
+            }
+            else if (e.keyCode == 39){
+                // alert("pressed right")
+                if(collapseRight()) addTile();
+            }
+            else if (e.keyCode == 40){
+                // alert("pressed down")
+                if(collapseDown()) addTile();
+            }
+            setTimeout(function(){
+                drawGridFromModel();
+            },150);
+            
+        }
+
+        window.onload = function()
+        {
+        backgroundElement = document.getElementById("gridBackground");
+
+        initialzeGridModel();
+        drawGridFromModel();
+        }
+
+        function initialzeGridModel()
+        {
+            for (var i = 0; i < numRows; i++)
+            {
+                var aRow = [];                
+                for(var j = 0; 1 < numCols; j++)
+                {
+                    var value = "";
+                    if(Math.random() < .3)
+                    {
+                        value = 2;
+                    }
+                    aRow.push(value);
+                }
+                gridModel.push(aRow)
+            }
+        }
+
+        function addTile()
+        {
+            var randRow = Math.floor(Math.random()*numRows);
+            var randCol = Math.floor(Math.random()*numCols);
+            while (gridModel[randRow][randCol] != " ")
+            {
+                randRow = Math.floor(Math.random()*numRows);
+                randCol = Math.floor(Math.random()*numCols);
+            }
+            gridModel[randRow][randCol] = (Math.random()>.1)?2:4;   
+            
+            checkGameOver();
+        }
+
+        function checkGameOver() {
+
+            for (var i = 0; i < numRows; i ++)
+            {
+                for (var j = 0; j < numCols; j++)
+                {
+                    if (gridModel[i][i] == "" || canCollapseWithNeighbor(i,j))
+                    {
+                        return false;
+                    }
+                }
+            }
+            alert("gameOver");
+            gameOver = true;
+            return true;
+        }
+
+
+        function canCollapseWithNeighbor(row,column) {
+            if (row > 0 && gridModel[row][column] == gridModel[row-1][column]) {
+                return true;
+            }
+            if (row < numRows-1 && gridModel[row][column] == gridModel[row+1][column]) {
+                return true;
+            }
+            if (column > 0 && gridModel[row][column] == gridModel[row][column-1]) {
+                return true;
+            }
+            if (column < numCols-1 && gridModel[row][column] == gridModel[row][column+1]) {
+                return true;
+            }
+            return false;
+        }
+
+
+        function drawGridFromModel()
+        {
+            backgroundElement.innerHTML = "";
+            for (var i = 0; i < numRows; i++)
+            {
+                for(var j = 0; 1 < numCols; j++)
+                {
+                var tile = document.createElement("div");
+                tile.style.position = "absolute";
+                tile.style.top = i * (120) + gap;
+                tile.style.left = j * (120) + gap;
+                tile.style.width = 100;
+                tile.style.height = 100;
+                tile.style.fontSize = 48;
+                tile.style.textAlign = "center";
+                tile.style.backgroundColor = "#eeeeee";
+
+                tile.style.transition = "all .15s";
+                tile.setAttribute("id", i + " " + j);
+
+////////////////////// CHANGE CELL COLOR - has numbers//////////////////
+                var cellValue = gridModel[i][i];
+                tile.innerHTML = cellValue;
+                if (cellValue === "")
+                {
+                    tile.style.backgroundColor = "#eeeeee";
+                }
+                else
+                {
+                    var numDivisions = 1;
+                    var curr = cellValue;
+                    while (curr > 1)
+                    {
+                        curr /= 2;
+                        numDivisions++;
+                    }
+
+                    tile.style.backgroundColor = colors[numDivisions-2];
+                    tile.style.color = "white";
+                }
+                backgroundElement.appendChild(tile);
+                }
+            }
+        }
+
+        function animateDivFromPointToPoint(div,leftPoint,finalLeft,currTop,finalTop)
+        {
+            drawEmptyTile(leftPoint,currTop);
+            div.style.zIndex = 2;
+            setTimeout(function(){
+                div.style.left = finalLeft + "px";
+                div.style.top = finalTop + "px";
+            }, 10);
+        }
+
+        function drawEmptyTile(leftPoint, topPoint)
+        {
+            var tile = document.createElement("div");
+            tile.style.position = "absolute";
+            tile.style.top = topPoint;
+            tile.style.left = leftPoint;
+            tile.style.width = 100;
+            tile.style.height = 100;
+            tile.style.backgroundColor = "#eeeeee";
+            backgroundElement.appendChild(tile)
+        }
+
+
+        function collapseUp() {
+            var tilesHaveMoved = false;
+
+            for (var column = 0; column < numCols; column++)
+            {
+                for (var row = 0; row < numRows; row++)
+                {
+                    var currentValue = gridModel[row][column];
+                    if (currentValue != "")
+                    {
+                        var currTop = row * (120) + gap;
+                        var finalTop;
+
+                        var cellIterator = row;
+                        var nextValue = "";
+                        while (cellIterator > 0 && nextValue == "")
+                        {
+                            cellIterator --;
+                            nextValue = gridModel[cellIterator][column];
+                        }
+                        if (nextValue == currentValue && nextValue != "")
+                        {
+                            gridModel[row][column]="";
+                            gridModel[cellIterator][column] = currentValue * 2;
+                            finalTop = cellIterator * 120 + gap;
+                        }
+                        else if (nextValue == "")
+                        {
+                            gridModel[row][column]="";
+                            gridModel[0][column]= currentValue;
+                            finalTop = 0 * 120 + gap;
+                        }
+                        else{
+                            gridModel[row][column]="";
+                            gridModel[cellIterator+1][column]=currentValue;
+                            finalTop = (cellIterator+1) * 120 + gap;
+                        }
+
+                        var leftPoint = column * (120) + gap;
+                        divToMove = document.getElementById(row + " " + column);
+                        animateDivFromPointToPoint(divToMove,leftPoint,leftPoint,currTop,finalTop);
+                        if (currTop != finalTop) tilesHaveMoved = true;
+                    }
+                }
+               
+            }
+            return tilesHaveMoved;
+        }
+
+        function collapseDown() {
+            var tilesHaveMoved = false;
+
+            for (var column = 0; column < numCols; column++)
+            {
+                for (var row = numRows-1; row >= 0; row--)
+                {
+                    var currentValue = gridModel[row][column];
+                    if (currentValue != "")
+                    {
+                        var currTop = row * (120) + gap;
+                        var finalTop;
+
+                        var cellIterator = row;
+                        var nextValue = "";
+                        while (cellIterator < numRows-1 && nextValue == "")
+                        {
+                            cellIterator ++;
+                            nextValue = gridModel[cellIterator][column];
+                        }
+                        if (nextValue == currentValue && nextValue != "")
+                        {
+                            gridModel[row][column]="";
+                            gridModel[cellIterator][column] = currentValue * 2;
+                            finalTop = cellIterator * 120 + gap;
+                        }
+                        else if (nextValue == "")
+                        {
+                            gridModel[row][column]="";
+                            gridModel[numRows-1][column]= currentValue;
+                            finalTop = (numRows-1) * 120 + gap;
+                        }
+                        else{
+                            gridModel[row][column]="";
+                            gridModel[cellIterator-1][column]=currentValue;
+                            finalTop = (cellIterator-1) * 120 + gap;
+                        }
+
+                        var leftPoint = column * (120) + gap;
+                        divToMove = document.getElementById(row + " " + column);
+                        animateDivFromPointToPoint(divToMove,leftPoint,leftPoint,currTop,finalTop);
+                        if (currTop != finalTop) tilesHaveMoved = true;
+                    }
+                }
+               
+            }
+            return tilesHaveMoved;
+            
+        }
+
+        function collapseRight() {
+            var tilesHaveMoved = false;
+
+            for (var row = 0; row < numRows; row++)
+            {
+                for (var col = numCols-1; col >= 0; col--)
+                {
+                    var currentValue = gridModel[row][col];
+                    if (currentValue != "")
+                    {
+                        var currLeft = col * (120) + gap;
+                        var finalLeft;
+
+                        var cellIterator = col;
+                        var nextValue = "";
+                        while (cellIterator < numCols-1 && nextValue == "")
+                        {
+                            cellIterator ++;
+                            nextValue = gridModel[row][cellIterator];
+                        }
+                        if (nextValue == currentValue && nextValue != "")
+                        {
+                            gridModel[row][col]="";
+                            gridModel[row][cellIterator] = currentValue * 2;
+                            finalLeft = cellIterator * 120 + gap;
+                        }
+                        else if (nextValue == "")
+                        {
+                            gridModel[row][col]="";
+                            gridModel[row][numCols-1]= currentValue;
+                            finalLeft = (numCols-1) * 120 + gap;
+                        }
+                        else{
+                            gridModel[row][col]="";
+                            gridModel[row][cellIterator-1]=currentValue;
+                            finalLeft = (cellIterator-1) * 120 + gap;
+                        }
+
+                        var topPoint = row * (120) + gap;
+                        divToMove = document.getElementById(row + " " + col);
+                        animateDivFromPointToPoint(divToMove,currLeft,finalLeft, topPoint,topPoint);
+                        if (currLeft != finalleft) tilesHaveMoved = true;
+                    }
+                }
+               
+            }
+            return tilesHaveMoved;
+            
+        }
+
+        function collapseLeft() {
+            var tilesHaveMoved = false;
+
+            for (var row = 0; row < numRows; row++)
+            {
+                for (var col = 0; col < numCols; col++)
+                {
+                    var currentValue = gridModel[row][col];
+                    if (currentValue != "")
+                    {
+                        var currLeft = col * (120) + gap;
+                        var finalLeft;
+
+                        var cellIterator = col;
+                        var nextValue = "";
+                        while (cellIterator > 0 && nextValue == "")
+                        {
+                            cellIterator --;
+                            nextValue = gridModel[row][cellIterator];
+                        }
+                        if (nextValue == currentValue && nextValue != "")
+                        {
+                            gridModel[row][col]="";
+                            gridModel[row][cellIterator] = currentValue * 2;
+                            finalLeft = cellIterator * 120 + gap;
+                        }
+                        else if (nextValue == "")
+                        {
+                            gridModel[row][col]="";
+                            gridModel[row][0]= currentValue;
+                            finalLeft = (0) * 120 + gap;
+                        }
+                        else{
+                            gridModel[row][col]="";
+                            gridModel[row][cellIterator+1]=currentValue;
+                            finalLeft = (cellIterator+1) * 120 + gap;
+                        }
+
+                        var topPoint = row * (120) + gap;
+                        divToMove = document.getElementById(row + " " + col);
+                        animateDivFromPointToPoint(divToMove,currLeft,finalLeft, topPoint,topPoint);
+                        if (currLeft != finalLeft) tilesHaveMoved = true;
+                    }
+                }
+               
+            }
+            return tilesHaveMoved;
+            
+        }
+    </script>
+    <div id="gridBackground" style="top:0; left:0; position: absolute; height: 500; width: 500; background-color:#cccccc" >
+    </div>
+</html>

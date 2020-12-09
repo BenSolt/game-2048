@@ -1,106 +1,89 @@
-import React, { useState } from "react";
-import "../AppGame2048.css";
-import { onLeft, onRight, onTop, onBottom } from "./functions";
-
-const Grid = ({ countIncrease }) => {
-  let [data, setData] = useState([
-
-    [null, null, null, null],
-    [null, null, 2, null],
-    [null, null, null, null],
-    [2, null, null, null]
-
-  ]);
-
-  const [changecolor, setChangecolor] = useState(0);
-  const [change, setChange] = useState('white');
-
-  /////////////////////////////////////////////////
-  function changeClass() {
-    document.getElementById('test').className = "valid2";
+import React from 'react';
   
-    // document.getElementById('pId').innerHTML = "New class name: " + button_class;
-  }
+    function Grid(size) {
+        this.size = size;
 
-  /////////////////////////////////////////////////
+        this.cells = [];
 
-
-  const handleKeyPress = (e) => {
-
-    if (e.key === "a" || e.key === "ArrowLeft") {
-      setData(onLeft(data, countIncrease));
-      // setChangecolor(changeClass)
-
-      console.log('Left')
+        this.build();
     }
 
-    if (e.key === "d") {
-      setData(onRight(data, countIncrease));
-      console.log('Right')
-    }
-    if (e.key === "w") {
-      setData(onTop(data, countIncrease));
-      console.log('Up')
-    }
-    if (e.key === "s") {
-      setData(onBottom(data, countIncrease));
-      console.log('Down')
-    }
-  };
+    // Build a grid of the specified size
+    Grid.prototype.build = function () {
+        for (var x = 0; x < this.size; x++) {
+            var row = this.cells[x] = [];
 
+            for (var y = 0; y < this.size; y++) {
+                row.push(null);
+            }
+        }
+    };
 
-  var colors = [
-    "orange",
-    "red",
-    "magenta",
-    "green",
-    "blue",
-    "cyan",
-    "purple",
-    "midnightblue",
-    "lime",
-    "pink",
-    "black"
-  ];
+    // Find the first available random position
+    Grid.prototype.randomAvailableCell = function () {
+        var cells = this.availableCells();
 
+        if (cells.length) {
+            return cells[Math.floor(Math.random() * cells.length)];
+        }
+    };
 
+    Grid.prototype.availableCells = function () {
+        var cells = [];
 
-  return (
-    <div className='Container'>
-      <div className='info'>
-        How to play
-        <button onClick={changeClass}>CLICK</button>
-      </div>
+        this.eachCell(function (x, y, tile) {
+            if (!tile) {
+                cells.push({ x: x, y: y });
+            }
+        });
 
-      <div
-        className="grid"
-        style={{ outline: "none" }}
-        tabIndex="0"
-        onKeyPress={handleKeyPress}
-      >
+        return cells;
+    };
 
-        {data.map((val, index) => {
+    // Call callback for every cell
+    Grid.prototype.eachCell = function (callback) {
+        for (var x = 0; x < this.size; x++) {
+            for (var y = 0; y < this.size; y++) {
+                callback(x, y, this.cells[x][y]);
+            }
+        }
+    };
 
-          // return (
-            
-          //   <div className='valid' id='test'>{val}</div>
-          // )
-          return val.map((innerVal, innerIndex) => {
-            return (
-              <div
-                key={`${index}-${innerIndex}`}
-                className={innerVal ? "valid" : "invalid"}
-              >
-                
-                {innerVal}
+    // Check if there are any cells available
+    Grid.prototype.cellsAvailable = function () {
+        return !!this.availableCells().length;
+    };
 
-              </div>
-            );
-          });
-        })}
-      </div>
-    </div>
-  );
-};
+    // Check if the specified cell is taken
+    Grid.prototype.cellAvailable = function (cell) {
+        return !this.cellOccupied(cell);
+    };
 
-export default Grid;
+    Grid.prototype.cellOccupied = function (cell) {
+        return !!this.cellContent(cell);
+    };
+
+    Grid.prototype.cellContent = function (cell) {
+        if (this.withinBounds(cell)) {
+            return this.cells[cell.x][cell.y];
+        } else {
+            return null;
+        }
+    };
+
+    // Inserts a tile at its position
+    Grid.prototype.insertTile = function (tile) {
+        this.cells[tile.x][tile.y] = tile;
+    };
+
+    Grid.prototype.removeTile = function (tile) {
+        this.cells[tile.x][tile.y] = null;
+    };
+
+    Grid.prototype.withinBounds = function (position) {
+        return position.x >= 0 && position.x < this.size &&
+            position.y >= 0 && position.y < this.size;
+    };
+
+    export default Grid;
+   

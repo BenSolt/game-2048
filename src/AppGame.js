@@ -16,7 +16,7 @@ function AppGame() {
         var x = canvas.width / 2;
         var y = canvas.height - 30;
 
-        // Directions
+        // Directionsaa
         var rightPressed = false;
         var leftPressed = false;
         var upPressed = false;
@@ -71,10 +71,10 @@ function AppGame() {
                 leftPressed = true;
             }
 
-            else if (e.key === "ArrowUp") {
+            else if (e.key === "ArrowUp" || e.key === "w") {
                 upPressed = true;
             }
-            else if (e.key === "ArrowDown") {
+            else if (e.key === "ArrowDown" || e.key === "s") {
                 downPressed = true;
             }
 
@@ -94,10 +94,10 @@ function AppGame() {
                 leftPressed = false;
             }
           
-            else if (e.key === "ArrowUp") {
+            else if (e.key === "ArrowUp" || e.key === "w") {
                 upPressed = false;
             }
-            else if (e.key === "ArrowDown") {
+            else if (e.key === "ArrowDown" || e.key === "s") {
                 downPressed = false;
             }
 
@@ -114,7 +114,7 @@ function AppGame() {
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawPaddle();
-            // drawBall();
+            drawBall();
             drawScore();
  
 
@@ -126,7 +126,7 @@ function AppGame() {
             }
             else if (y + dy > canvas.height - ballRadius) {
                 if (x > paddleX && x < paddleX + paddleWidth) {
-                    if (y = y - paddleHeight) {
+                    if (y = y - paddleHeight - 50) {
                         dy = -dy;
                     }
                 }
@@ -163,7 +163,7 @@ function AppGame() {
 
     return (
         <div>
-            <canvas id="myCanvas" width="480" height="320"></canvas>
+            <canvas id="myCanvas" className='canvasback' width="480" height="320"></canvas>
         </div>
     )
 }
